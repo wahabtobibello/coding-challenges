@@ -1,9 +1,9 @@
-def check_perm(pattern, test):
+def permutation_substring_search(pattern, test):
     result = []
     pattern_char_countdown = {}
     matched = 0
-    s = len(pattern)
-    b = len(test)
+    pattern_size = len(pattern)
+    test_size = len(test)
 
     for char in pattern:
         if char in pattern_char_countdown:
@@ -12,7 +12,7 @@ def check_perm(pattern, test):
             pattern_char_countdown[char] = 1
             matched += 1
 
-    for i in range(s):
+    for i in range(pattern_size):
         if test[i] in pattern_char_countdown:
             pattern_char_countdown[test[i]] -= 1
             if pattern_char_countdown[test[i]] == 0:
@@ -21,11 +21,11 @@ def check_perm(pattern, test):
     if matched == 0:
         result.append(0)
 
-    for i in range(s, b):
-        if test[i - s] in pattern_char_countdown:
-            if pattern_char_countdown[test[i - s]] == 0:
+    for i in range(pattern_size, test_size):
+        if test[i - pattern_size] in pattern_char_countdown:
+            if pattern_char_countdown[test[i - pattern_size]] == 0:
                 matched += 1
-            pattern_char_countdown[test[i - s]] += 1
+            pattern_char_countdown[test[i - pattern_size]] += 1
 
         if test[i] in pattern_char_countdown:
             pattern_char_countdown[test[i]] -= 1
@@ -33,9 +33,10 @@ def check_perm(pattern, test):
                 matched -= 1
 
         if matched == 0:
-            result.append(i - s + 1)
+            result.append(i - pattern_size + 1)
 
     return tuple(result)
 
 
-print(check_perm("abc", "cdbcadbcadbacdcabcdcabdcabdacbdcacbdcabdadcacbdcbadcabdcadcbd"))
+print(permutation_substring_search(
+    "abc", "cdbcadbcadbacdcabcdcabdcabdacbdcacbdcabdadcacbdcbadcabdcadcbd"))
